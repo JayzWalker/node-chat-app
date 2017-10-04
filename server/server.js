@@ -22,47 +22,19 @@ io.on('connection', (socket) => {
     // io.emit emit to all connections
     // socket.broadcast.emit broadcast to everyone except sender
 
-    // socket.emit('newMessage', {
-    //     from: 'jayz@gmail.com',
-    //     text: 'Hey, I am here',
-    //     createAt: 123
-    // })
-    // socket.emit('newEmail', {
-    //     from: 'jayz@gmail.com',
-    //     text: 'Hey, I am here',
-    //     createAt: 123
-    // });
-
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
-    // socket.emit('newMessage', {
-    //     from: 'Admin',
-    //     text: 'Welcome to the chat app'
-    // });
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
-    // socket.broadcast.emit('newMessage', {
-    //     from: 'Admin',
-    //     text: 'New user joined',
-    //     createAt: new Date().getTime()
-    // })
 
-    socket.on('createMessage', message => {
+    socket.on('createMessage', (message, callback) => {
         console.log('Create Message: ', message);
-        // io.emit('newMessage', {
-        //     from: message.from,
-        //     text: message.text,
-        //     createAt: new Date().getTime()
-        // })
         io.emit('newMessage', generateMessage(message.from, message.text));
+        callback('This is from the server');
         // socket.broadcast.emit('newMessage', {
         //     from: message.from,
         //     text: message.text,
         //     createAt: new Date().getTime()
         // });
     });
-
-    socket.on('createEmail', newEmail => {
-        console.log('Create email', newEmail);
-    })
 
     socket.on('disconnect', () => {
         console.log('User was disconnected');
