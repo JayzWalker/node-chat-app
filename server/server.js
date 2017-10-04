@@ -17,6 +17,9 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('New user connected');
 
+    // socket.emit emit to single connection
+    //io.emit emit to all connections
+
     socket.emit('newMessage', {
         from: 'jayz@gmail.com',
         text: 'Hey, I am here',
@@ -28,8 +31,13 @@ io.on('connection', (socket) => {
     //     createAt: 123
     // });
 
-    socket.on('createMessage', newMessage => {
-        console.log('Create Message: ', newMessage);
+    socket.on('createMessage', message => {
+        console.log('Create Message: ', message);
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createAt: new Date().getTime()
+        })
     });
 
     socket.on('createEmail', newEmail => {
