@@ -20,11 +20,11 @@ io.on('connection', (socket) => {
     // socket.emit emit to single connection
     //io.emit emit to all connections
 
-    socket.emit('newMessage', {
-        from: 'jayz@gmail.com',
-        text: 'Hey, I am here',
-        createAt: 123
-    })
+    // socket.emit('newMessage', {
+    //     from: 'jayz@gmail.com',
+    //     text: 'Hey, I am here',
+    //     createAt: 123
+    // })
     // socket.emit('newEmail', {
     //     from: 'jayz@gmail.com',
     //     text: 'Hey, I am here',
