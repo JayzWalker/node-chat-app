@@ -19,12 +19,16 @@ function scrollToBottom() {
 }
 
 socket.on('connect', function() {
-    console.log('Connected to server');
+    var params = jQuery.deparam(window.location.search);
 
-    // socket.emit('createMessage', {
-    //     to: 'meixing@gmail.com',
-    //     text: 'Hi, bae'
-    // });
+    socket.emit('join', params, function (error) {
+        if(error) {
+            alert(error);
+            window.location.href = '/';
+        }else {
+            console.log('No error');
+        }
+    })
 });
 
 socket.on('disconnect', function() {
@@ -42,18 +46,7 @@ socket.on('newMessage', function (message) {
 
     jQuery('#messages').append(html);
     scrollToBottom();
-    // var formattedTime = moment(message.createdAt).format('h:mm a');
-    // var li = jQuery('<li></li>');
-    // li.text(`${message.from} ${formattedTime}: ${message.text}`);
-    // jQuery('#messages').append(li);
-})
-
-// socket.emit('createMessage', {
-//     from: 'meixing@gmail.com',
-//     text: 'Hi, bae'
-// }, function(data) {
-//     console.log('Got it ', data);
-// });
+});
 
 
 jQuery('#message-form').on('submit', function (event) {
@@ -106,3 +99,13 @@ socket.on('newLocationMessage', function (message) {
     // li.append(a);
     // jQuery('#messages').append(li);
 })
+
+
+socket.on('updateUserList', function (users) {
+    var ol = jQuery('<ol></ol>');
+    users.forEach(function (user) {
+        ol.append(jQuery('<li></li>').text(user));
+    })
+
+    jQuery('#users').html(ol);
+});
